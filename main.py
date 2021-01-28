@@ -6,6 +6,11 @@ import math
 
 client = commands.Bot(command_prefix='!')
 
+with open('discord-token.txt', 'r') as f:
+    discordtoken = f.read()
+with open('weatherapi-token.txt', 'r') as f:
+    weathertoken = f.read()
+
 
 @client.event
 async def on_ready():
@@ -15,8 +20,18 @@ async def on_ready():
 @client.command()
 async def weather(ctx, *args):
     author = ctx.message.author
+    picksglobal = {
+        'North America': '🐶',
+        'South America': '🥎',
+        'Europe': '⚽',
+        'Africa': '💎',
+        'Asia': '🏓',
+        'Australia & Oceania': '🎱'
+    }
+
     if len(args) == 0:
-        await ctx.send("*NOTE: If you'd rather prefer to use a text version of this command, please use !weather text instead. (This might work better on lower-resolution screens.)*")
+        await ctx.send(
+            "*NOTE: If you'd rather prefer to use a text version of this command, please use !weather text instead. (This might work better on lower-resolution screens.)*")
         wiad = '`Pick the continent you want to check the weather in with an emote: `'
         await ctx.send(wiad)
         wrld_map = await ctx.send('''.                                                               ▄                 ████▀                                             ▄▄▄▄▄▄▄▄
@@ -35,45 +50,21 @@ async def weather(ctx, *args):
                                                                ██▀                                                                                                                        ▀█
                                                                  █▄''')
     elif args[0] == 'text':
-        wrld_map = await ctx.send('''
-`For North America, react with 🐶.
-For South America, react with 🥎.
-For Europe, react with ⚽.
-For Africa, react with 💎.
-For Asia, react with 🏓.
-For Australia and Oceania, react with 🎱.`''')
-    emojis = ['🐶', '🥎', '⚽', '💎', '🏓', '🎱']
-    for emoji in emojis:
-        await wrld_map.add_reaction(emoji)
+        wrld_map = ''
+        for continent in list(picksglobal.keys()):
+            wrld_map += '`For ' + continent + ', react with ' + picksglobal[continent] + '.` \n'
+        wrld_map = await ctx.send(wrld_map)
+    else:
+        await ctx.send('Wrong argument specified. Please invoke command again')
+
+    for continent in picksglobal:
+        await wrld_map.add_reaction(picksglobal[continent])
     try:
         reaction, user = await client.wait_for('reaction_add', check=lambda reaction, user: user == author, timeout=30)
     except asyncio.TimeoutError:
         await ctx.send('`No reaction from user in 30 seconds. Please invoke the command again if you wish to proceed.`')
     else:
-        if reaction=='🐶':
-            na()
-        if reaction=='🥎':
-            na()
-        if reaction=='⚽':
-            na()
-        if reaction=='💎':
-            na()
-        if reaction=='🏓':
-            na()
-        if reaction=='🎱':
-            na()
+        pass
 
-token = 'NzkzNTU3NjAyMDQyNzczNTI0.X-uAGw.gpAcl5YC1Sdgr3cJ46PSWrSrLFg'
-def na():
-    pass
-def sa():
-    pass
-def eu():
-    pass
-def afr():
-    pass
-def asia():
-    pass
-def oce():
-    pass
-client.run(token)
+
+client.run(discordtoken)
