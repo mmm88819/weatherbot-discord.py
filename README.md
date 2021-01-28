@@ -1,0 +1,5 @@
+# weatherbot-discord.py
+
+FOR THIS BOT TO WORK YOU NEED YOUR OWN DISCORD TOKEN AND WEATHERAPI.COM TOKEN. 
+PUT YOUR DISCORD TOKEN IN A TXT FILE NAMED "discord-token.txt" AND YOUR WEATHERAPI TOKEN IN A FILE NAMED "weatherapi-token.txt"
+sorry for using capslock xx
